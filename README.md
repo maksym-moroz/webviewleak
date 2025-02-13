@@ -3,19 +3,26 @@ This repository contains a very simple app that reproduces a critical memory lea
 Here's a sample activity that reproduces the leak:
 
 ```
-class MainActivity : ComponentActivity() {
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity)
+class MainActivity : Activity() {
+    private lateinit var webView: WebView
 
-    val webView = findViewById<WebView>(R.id.webview)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity)
 
-    findViewById<Button>(R.id.recreate).setOnClickListener {
-        val intent = Intent(this, SecondActivity::class.java)
-        startActivity(intent)
-        finish()
+        webView = findViewById(R.id.webview)
+
+        findViewById<Button>(R.id.recreate).setOnClickListener {
+            val intent = Intent(this, SecondActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
-  }
+
+    override fun onDestroy() {
+        webView.destroy()
+        super.onDestroy()
+    }
 }
 ```
 

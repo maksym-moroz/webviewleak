@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">webviewleak</string>
+    <string name="open_second_activity">Open second activity</string>
+</resources>
